@@ -24,7 +24,7 @@ npm install depcut
 
 ## API Reference
 
-### 🔹 `getFiles(dir: string): string[]`
+### `getFiles(dir: string): string[]`
 > Recursively retrieves JavaScript and TypeScript files from the given directory.
 - **Arguments:**
   - `dir` → Type: `string` → The directory path to scan.
@@ -39,7 +39,7 @@ console.log(files); // List of JS/TS files in the project
 
 ---
 
-### 🔹 `dependencyUsed(dependency: string): boolean`
+### `dependencyUsed(dependency: string): boolean`
 > Checks if a dependency is imported in any project file.
 - **Arguments:**
   - `dependency` → Type: `string` → The dependency name to check.
@@ -55,7 +55,7 @@ if (dependencyUsed('lodash')) {
 
 ---
 
-### 🔹 `scriptUsed(dependency: string): boolean`
+### `scriptUsed(dependency: string): boolean`
 > Checks if a dependency is used inside `package.json` scripts.
 - **Arguments:**
   - `dependency` → Type: `string` → The dependency name to check.
@@ -71,7 +71,7 @@ if (scriptUsed('nodemon')) {
 
 ---
 
-### 🔹 `getGlobal(): string[]`
+### `getGlobal(): string[]`
 > Retrieves a list of globally installed npm packages.
 - **Arguments:** `None`
 - **Returns:** An array of globally installed package names.
@@ -85,7 +85,7 @@ console.log(globalPackages); // List of globally installed packages
 
 ---
 
-### 🔹 `remove(dependencies: string[], global?: boolean): void`
+### `remove(dependencies: string[], global?: boolean): void`
 > Uninstalls the given list of dependencies. If `global` is `true`, removes global packages.
 - **Arguments:**
   - `dependencies` → Type: `string[]` → An array of dependency names to remove.
@@ -101,7 +101,7 @@ remove(['typescript'], true); // Remove a global dependency
 
 ---
 
-### 🔹 `main(): void`
+### `main(): void`
 > Runs the main program, scans dependencies, and prompts the user for removal.
 - **Arguments:** `None`
 - **Returns:** `void`

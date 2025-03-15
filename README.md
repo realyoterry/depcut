@@ -24,23 +24,23 @@ npm install depcut
 
 ## API Reference
 
-### `getFiles(dir: string): string[]`
-Recursively retrieves JavaScript and TypeScript files from the given directory.
+#### `getFiles(dir: string): string[]`
+🔹Recursively retrieves JavaScript and TypeScript files from the given directory.
 
-### `dependencyUsed(dependency: string): boolean`
-Checks if a dependency is imported in any project file.
+#### `dependencyUsed(dependency: string): boolean`
+🔹Checks if a dependency is imported in any project file.
 
-### `scriptUsed(dependency: string): boolean`
-Checks if a dependency is used inside package.json scripts.
+#### `scriptUsed(dependency: string): boolean`
+🔹Checks if a dependency is used inside package.json scripts.
 
-### `getGlobal(): string[]`
-Retrieves a list of globally installed npm packages.
+#### `getGlobal(): string[]`
+🔹Retrieves a list of globally installed npm packages.
 
-### `remove(dependencies: string[], global?: boolean): void`
-Uninstalls the given list of dependencies. If `global` is `true`, removes global packages.
+#### `remove(dependencies: string[], global?: boolean): void`
+🔹Uninstalls the given list of dependencies. If `global` is `true`, removes global packages.
 
-### `main(): void`
-Main function to run all listed functions.
+#### `main(): void`
+🔹Main function to run all listed functions.
 
 ## License
 

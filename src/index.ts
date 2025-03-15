@@ -3,7 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
-import { spawn, execSync } from 'child_process';
+import { quote } from 'shell-quote';
+import { execSync } from 'child_process';
 
 // package.json dummy interface
 interface PackageJSON {
@@ -126,7 +127,7 @@ export function remove(dependencies: string[], global: boolean = false): void {
 
     const startTime = Date.now();
 
-    const uninstallNext = (index: number) => {
+    const next = (index: number) => {
         if (index >= dependencies.length) {
             const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
             console.log(`\nRemoved ${dependencies.length} dependenc${dependencies.length > 1 ? 'ies' : 'y'} in ${elapsedTime} seconds.`);
@@ -134,22 +135,21 @@ export function remove(dependencies: string[], global: boolean = false): void {
         }
 
         const dep = dependencies[index];
-        const child = spawn('npm', ['uninstall', dep.replace(/[^a-zA-Z0-9@\/.-]/g, ''), ...(global ? ['-g'] : [])], { stdio: 'ignore', shell: true });
 
-        child.on('close', (code: number) => {
-            if (code === 0) {
-                readline.clearLine(process.stdout, 0);
-                readline.cursorTo(process.stdout, 0);
-                console.log(`- Removed ${dep}`);
-            } else {
-                console.error(`\nError uninstalling ${dep}: Exit code ${code}`);
-            }
-
-            uninstallNext(index + 1);
-        });
+        try {
+            execSync(quote(['npm', 'uninstall', dep.replace(/[^a-zA-Z0-9@\/.-]/g, ''), ...(global ? ['-g'] : [])]));
+        
+            readline.clearLine(process.stdout, 0);
+            readline.cursorTo(process.stdout, 0);
+            console.log(`- Removed ${dep}`);
+        } catch (error) {
+            console.error(`\nError uninstalling ${dep}: ${error}`);
+        }
+        
+        next(index + 1);
     };
 
-    uninstallNext(0);
+    next(0);
 }
 
 /**
@@ -181,10 +181,7 @@ export function main(): void {
         const selectedDeps = [...new Set(answer.match(/\d/g)?.map((n) => [...unused, ...global][+n - 1]) || [])];
 
         remove(selectedDeps.filter((dep) => !global.includes(dep)));
-        remove(
-            selectedDeps.filter((dep) => global.includes(dep)),
-            true
-        );
+        remove(selectedDeps.filter((dep) => global.includes(dep)), true);
     });
 }
 

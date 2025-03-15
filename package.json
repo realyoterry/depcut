@@ -22,10 +22,14 @@
     },
     "devDependencies": {
         "@types/node": "^22.13.10",
+        "@types/shell-quote": "^1.7.5",
         "prettier": "^3.5.1",
         "typescript": "^5.7.3"
     },
     "bin": {
         "depcut": "lib/index.cjs"
+    },
+    "dependencies": {
+        "shell-quote": "^1.8.2"
     }
 }

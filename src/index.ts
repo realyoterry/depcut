@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
-import { execFile, execFileSync } from 'child_process';
+import { spawn, execSync } from 'child_process';
 
 // package.json dummy interface
 interface PackageJSON {
@@ -106,7 +106,7 @@ export function scriptUsed(dependency: string): boolean {
  */
 export function getGlobal(): string[] {
     try {
-        const result = execFileSync('npm', ['ls', '-g', '--depth=0', '--json'], { encoding: 'utf8', shell: true });
+        const result = execSync('npm ls -g --depth=0 --json', { encoding: 'utf8' });
         const globalPackages: PackageJSON = JSON.parse(result);
         return Object.keys(globalPackages.dependencies || {});
     } catch (error) {
@@ -134,14 +134,15 @@ export function remove(dependencies: string[], global: boolean = false): void {
         }
 
         const dep = dependencies[index];
+        const child = spawn('npm', ['uninstall', dep.replace(/[^a-zA-Z0-9@\/.-]/g, ''), ...(global ? ['-g'] : [])], { stdio: 'ignore', shell: true });
 
-        execFile('npm', ['uninstall', dep, ...(global ? ['-g'] : [])], { shell: true }, (err, _, stderr) => {
-            if (err) {
-                console.error(`\nError uninstalling ${dep}:`, stderr);
-            } else {
+        child.on('close', (code: number) => {
+            if (code === 0) {
                 readline.clearLine(process.stdout, 0);
                 readline.cursorTo(process.stdout, 0);
                 console.log(`- Removed ${dep}`);
+            } else {
+                console.error(`\nError uninstalling ${dep}: Exit code ${code}`);
             }
 
             uninstallNext(index + 1);

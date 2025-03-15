@@ -138,14 +138,14 @@ export function remove(dependencies: string[], global: boolean = false): void {
 
         try {
             execSync(quote(['npm', 'uninstall', dep.replace(/[^a-zA-Z0-9@\/.-]/g, ''), ...(global ? ['-g'] : [])]));
-        
+
             readline.clearLine(process.stdout, 0);
             readline.cursorTo(process.stdout, 0);
             console.log(`- Removed ${dep}`);
         } catch (error) {
             console.error(`\nError uninstalling ${dep}: ${error}`);
         }
-        
+
         next(index + 1);
     };
 
@@ -181,7 +181,10 @@ export function main(): void {
         const selectedDeps = [...new Set(answer.match(/\d/g)?.map((n) => [...unused, ...global][+n - 1]) || [])];
 
         remove(selectedDeps.filter((dep) => !global.includes(dep)));
-        remove(selectedDeps.filter((dep) => global.includes(dep)), true);
+        remove(
+            selectedDeps.filter((dep) => global.includes(dep)),
+            true
+        );
     });
 }
 

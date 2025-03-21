@@ -2,13 +2,13 @@
 /.vscode
 /tsconfig.json
 /SECURITY.md
-/LICENSE
 /docs
 /src
 /test
 /.prettierrc
 /.gitignore
 /.prettierignore
+/.tsbuildinfo
 /COMMIT_CONVENTION.md
 /CONTRIBUTING.md
 /tsconfig.cjs.tsbuildinfo
